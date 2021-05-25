@@ -3,8 +3,54 @@ const TabelaAgendamento = require('./TabelaAgendamento');
 module.exports = {
     async listar() {
         try {
-            return await TabelaAgendamento.findAll({
+            result await TabelaAgendamento.findAll({
                 raw: true,
+            });
+            return result
+        } catch (error) {
+            throw error
+        }
+    },
+
+    async buscaPorPk(id) {
+        try {
+            result = await TabelaAgendamento.findByPk(id);
+            return result
+        } catch (error) {
+            throw error
+        }
+    },
+
+    async adcionar(agendamento) {
+        try {
+            result = await TabelaAgendamento.create(agendamento);
+            return result
+        } catch (error) {
+            throw error
+        }
+    },
+
+    async atualizar(id, dados) {
+        try {
+            result = await TabelaAgendamento.update(dados,
+                {
+                    where: {
+                        id:id
+                    }
+                }
+            );
+            return result
+        } catch (error) {
+            throw error
+        }
+    },
+
+    async remover(id) {
+        try {
+            result = await TabelaAgendamento.destroy({
+                where: {
+                    id:id
+                }
             });
         } catch (error) {
             throw error
