@@ -1,6 +1,16 @@
 const Agendamento = require('./Agendamento');
+const SequelizeAgendamento = require('../models/SequelizeAgendamentos')
 
 module.exports = {
+
+    carregarTodosAgendamentos: async(req, resp) => {
+        try {
+            const results = await SequelizeAgendamento.listar();
+            resp.status(201).send(JSON.stringify(results));
+        } catch (error) {
+            resp.status(402),send(JSON.stringify(error))
+        }
+    },
 
     carregarAgendamento: async(req, resp) => {
         try {
@@ -9,7 +19,7 @@ module.exports = {
             await agendamento.buscar();
             resp.status(201).send(JSON.stringify(agendamento))
         } catch (error) {
-            resp.send(400).send(JSON.stringify(error))
+            resp.status(401).send(JSON.stringify(error))
         }
     },
 
@@ -22,5 +32,5 @@ module.exports = {
         } catch (error) {
             resp.send(400).send(JSON.stringify(error))
         }
-    }
-}
+    },
+};

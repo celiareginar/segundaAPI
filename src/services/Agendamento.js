@@ -1,4 +1,4 @@
-const sequelizeAgendamento = require('../services')
+const sequelizeAgendamento = require('../models/SequelizeAgendamentos')
 
 class Agendamento {
     construtor({id, nome_cliente, nome_servico, status, data_agendamento, data_criacao, data_atualizacao}) {
@@ -11,14 +11,15 @@ class Agendamento {
         this.data_atualizacao = data_atualizacao;
     };
     async criar() {
+        this.validar();
         const result = await sequelizeAgendamento.adicionar({
             nome_cliente: this.nome_cliente,
-            this.nome_servico: this.nome_servico,
+            nome_servico: this.nome_servico,
             status: this.status,
             data_atualizacao: this.data_atualizacao
         });
-        this.id - result.id;
-        this.data_criacao = result .data_criacao;
+        this.id = result.id;
+        this.data_criacao = result.data_criacao;
         this.data_atualizacao = result.data_atualizacao;
     };
 
@@ -32,5 +33,16 @@ class Agendamento {
         this.data_criacao = result.data_criacao;
         this.data_atualizacao = result.data_atualizacao;
     };
-}
+    validar() {
+        const camposObrigatorios = ['nome_cliente', 'nome_servico', 'status', 'data_agendamento']
+        
+        camposObrigatorios.forEach((campo) => {
+            const valor = this[campo];
+            if(typeof valor !== 'string' || valor.length === 0){
+                throw new Error('Campo inválido')
+            }
+        });
+    }
+};
+
 module.exports = Agendamento;

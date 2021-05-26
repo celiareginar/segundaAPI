@@ -4,14 +4,13 @@ const instanciadb = require('./db');
 
 (async () => {
     try {
-        await instanciadb.sync({ force: true})
+        await instanciadb.sync()
 
         app = configExpress()
         app.listen(config.get('api.port'), () => {
-            console.log('Servidor rodando!')
+            console.log('Servidor  Rodando')
         });
     } catch (error) {
         throw error;
     };
-    
 })();

@@ -3,7 +3,7 @@ const TabelaAgendamento = require('./TabelaAgendamento');
 module.exports = {
     async listar() {
         try {
-            result await TabelaAgendamento.findAll({
+            result = await TabelaAgendamento.findAll({
                 raw: true,
             });
             return result
