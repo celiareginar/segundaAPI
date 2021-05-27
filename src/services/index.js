@@ -8,7 +8,7 @@ module.exports = {
             const results = await SequelizeAgendamento.listar();
             resp.status(201).send(JSON.stringify(results));
         } catch (error) {
-            resp.status(402),send(JSON.stringify(error))
+            resp.send(401).send(JSON.stringify({error: error.message}))
         }
     },
 
@@ -19,7 +19,7 @@ module.exports = {
             await agendamento.buscar();
             resp.status(201).send(JSON.stringify(agendamento))
         } catch (error) {
-            resp.status(401).send(JSON.stringify(error))
+            resp.send(401).send(JSON.stringify({error: error.message}))
         }
     },
 
@@ -28,9 +28,14 @@ module.exports = {
             const reqAgendamento = req.body;
             const agendamento = new Agendamento(reqAgendamento);
             await agendamento.criar()
-            resp.atatus(2001).send(JSON.stringify(agendamento))
+            resp.atatus(201).send(JSON.stringify(agendamento))
         } catch (error) {
-            resp.send(400).send(JSON.stringify(error))
+            resp.send(401).send(JSON.stringify({error: error.message}))
         }
     },
+    // deletarAgendamento: async(req, resp => {
+    //     try{
+    //         const id = req.parms
+    //     }
+    // })
 };
