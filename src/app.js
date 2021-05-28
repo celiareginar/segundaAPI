@@ -7,10 +7,11 @@ const instanciadb = require('./db');
         await instanciadb.sync()
 
         app = configExpress()
-        // app.listen(config.get('api.port'), () => {
-            console.log('Servidor  Rodando')
-        // })
+        app.listen(config.get('api.port'), () => {
+            console.log('Servidor rodando!')
+        });
     } catch (error) {
         throw error;
     };
+    
 })();

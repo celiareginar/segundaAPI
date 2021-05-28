@@ -12,7 +12,7 @@ module.exports = {
         }
     },
 
-    async buscaPorPk(id) {
+    async buscarPorPK(id) {
         try {
             result = await TabelaAgendamento.findByPk(id);
             return result
@@ -21,7 +21,7 @@ module.exports = {
         }
     },
 
-    async adcionar(agendamento) {
+    async adicionar(agendamento) {
         try {
             result = await TabelaAgendamento.create(agendamento);
             return result
@@ -32,7 +32,7 @@ module.exports = {
 
     async atualizar(id, dados) {
         try {
-            result = await TabelaAgendamento.update(dados,
+            result = await TabelaAgendamento.update(dados, 
                 {
                     where: {
                         id:id
@@ -52,6 +52,7 @@ module.exports = {
                     id:id
                 }
             });
+            return result
         } catch (error) {
             throw error
         }

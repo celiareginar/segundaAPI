@@ -1,5 +1,6 @@
+
 const router = require('express').Router();
-const servicoAgendamento = require('../services')
+const servicoAgendamento = require('../services');
 
 router.get('/agendamentos', 
     servicoAgendamento.carregarTodosAgendamentos
@@ -11,9 +12,14 @@ router.get('/agendamentos/:id',
 
 router.post('/agendamentos',
     servicoAgendamento.criarAgendamento
-);
-router.delete('/agendamento',
-
 )
+
+router.put('/agendamentos/:id',
+    servicoAgendamento.alterarAgendamento
+);
+
+router.delete('/agendamentos/:id', 
+    servicoAgendamento.deletarAgendamento
+);
 
 module.exports = router
