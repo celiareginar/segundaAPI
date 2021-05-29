@@ -1,5 +1,7 @@
 const sequelizeAgendamento = require('../models/SequelizeAgendamentos');
 const moment = require('moment');
+const CampoInvalido = require('../errors/CampoInvalido');
+const NaoEncontrado = require('../errors/')
 
 class Agendamento {
     constructor({id, nome_cliente, nome_servico, status, data_agendamento, 

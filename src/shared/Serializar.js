@@ -19,3 +19,19 @@ class SerializarAgendamento extends Serializar {
         this.contentType = contentType;
     };
 };
+class SerializarErro extends Serializar {
+    constructor(contentType) {
+        super()
+        this.contentType = contentType;
+        this.camposPermitidos = [
+            'id', 'mensagem'
+        ]
+    }
+}
+
+module.exports = {
+    Serializar: Serializar,
+    SerializarAgendamento: SerializarAgendamento,
+    SerializarErro: SerializarErro,
+    FormatoValido: ['aplication/json']
+}

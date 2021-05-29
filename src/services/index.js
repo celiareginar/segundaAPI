@@ -1,14 +1,17 @@
 const Agendamento = require('./Agendamento');
 const SequelizeAgendamentos = require('../models/SequelizeAgendamentos');
+const SerializarAgendamento = require('../shared/Serializar').SerializarAgendamento;
 
 module.exports = {
-    carregarTodosAgendamentos: async(req, resp) => {
+    carregarTodosAgendamentos: async(req, resp, next) => {
         try {
             const results = await SequelizeAgendamentos.listar();
-            resp.status(201).send(JSON.stringify(results));
+            const serializador = new SerializadorAgendamento(
+                resp.getHeader('Content-Type')
+            );
+            resp.status(201).send(serializador.transformar(agendamento));
         } catch (error) {
-            resp.status(401).send(JSON.stringify({error: error.message}))
-        }
+            next(error)
     },
 
     carregarAgendamento: async(req, resp) => {
@@ -16,9 +19,12 @@ module.exports = {
             const id = req.params.id;
             const agendamento = new Agendamento({id: id});
             await agendamento.buscar();
-            resp.status(201).send(JSON.stringify(agendamento))
+            const serializador = new SerializadorAgendamento(
+                resp.getHeader('Content-Type')
+            )
+            resp.status(201).send(serializador.transformar(agendamento))
         } catch (error) {
-            resp.status(401).send(JSON.stringify({error: error.message}))
+            next(error)
         }
     },
 
@@ -27,9 +33,12 @@ module.exports = {
             const reqAgendamento = req.body;
             const agendamento = new Agendamento(reqAgendamento);
             await agendamento.criar()
-            resp.status(201).send(JSON.stringify(agendamento))
+            const serializador = new SerializadorAgendamento(
+                resp.getHeader('Content-Type')
+            )
+            resp.status(201).send(serializador.transformar(agendamento))
         } catch (error) {
-            resp.status(401).send(JSON.stringify({error: error.message}))
+            next(error)
         }
     },
 
@@ -38,7 +47,9 @@ module.exports = {
             const id = req.params.id;
             const agendamento = new Agendamento({id: id});
             await agendamento.remover()
-            resp.status(200).send(JSON.stringify({message:`Agendamento: ${id} removido com sucesso`}));
+            const serializador = new SerializadorAgendamento(
+            resp.getHeader('Content-Type')(
+                {message:`Agendamento: ${id} removido com sucesso`}));
         } catch (error) {
             resp.status(404).send(JSON.stringify({error: error.message}))
         }
@@ -51,9 +62,12 @@ module.exports = {
             const dados = Object.assign({}, dadosBody, {id:id})
             const agendamento = new Agendamento(dados);
             await agendamento.atualizar();
-            resp.status(204).send()
-        } catch (error) {   
-            resp.status(400).send();
+            const serializador = new SerializadorAgendamento(
+                resp.getHeader('Content-Type')
+            )
+            resp.status(201).send(serializador.transformar(agendamento))
+        } catch (error) {
+            next(error)
         }
     }
 }
