@@ -1,5 +1,4 @@
 const NaoEncontrado = require('../../errors/NaoEncontrado');
-const { listar, adicionar, buscarPorPK, remover } = require('../agendamentos/SequelizeAgendamentos');
 const TabelaUsuario = require('./TabelaUsuario');
 
 module.exports = {
@@ -7,16 +6,16 @@ module.exports = {
         try {
             results = await TabelaUsuario.findAll({});
             return results;
-        }catch (error) {
+        } catch (error) {
             throw error
         }
     },
 
-    asunc adicionar(ususario) {
+    async adicionar(usuario) {
         try {
             result = await TabelaUsuario.create(usuario);
             return result;
-        }catch (error){
+        } catch (error) {
             throw error
         }
     },
@@ -24,11 +23,13 @@ module.exports = {
     async buscarPorPK(id) {
         try {
             usuario = await TabelaUsuario.findByPk(id);
+
             if(!usuario) {
-                throw new NaoEncontrado;
+                throw new NaoEncontrado('Usuário');
             }
+
             return usuario;
-        }catch (error) {
+        } catch (error) {
             throw error
         }
     },
@@ -36,15 +37,34 @@ module.exports = {
     async buscarPorEmail(email) {
         try {
             usuario = await TabelaUsuario.findOne({
-                where: {
-                    email: email
+                where:{
+                    email:email
                 }
             });
+
             if(!usuario) {
-                throw new NaoEncontrado('Usuario')
+                throw new NaoEncontrado('Usuário')
             }
+
             return usuario;
-        }catch (error){
+        } catch (error) {
+            throw error
+        }
+    },
+
+    async atualizar(id, dados){
+        try {
+            result = await TabelaUsuario.update(
+                dados,
+                {
+                    where: {
+                        id:id
+                    }
+                }
+            )
+
+            return result
+        } catch (error) {
             throw error
         }
     },
@@ -58,10 +78,10 @@ module.exports = {
                     }
                 }
             );
+
             return result
-        }catch (error){
+        } catch (error) {
             throw error
         }
     }
 };
-

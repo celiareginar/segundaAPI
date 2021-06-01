@@ -1,6 +1,4 @@
 const SequelizeUsuario = require('../../models/usuarios/SequelizeUsuario');
-const sequelizeUsuario = require('../../models/usuarios/SequelizeUsuario')
-
 class Usuario {
     constructor ({
         id, nome, email, senha, data_criacao, data_atualizacao

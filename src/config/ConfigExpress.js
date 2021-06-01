@@ -1,7 +1,12 @@
 const express = require('express');
-const routesAgendamento = require('../api');
+const routesAgendamento = require('../api/agendamentos');
 const FormatosValidos = require('../shared/Serializar').FormatosValidos;
 const SerializarErro = require('../shared/Serializar').SerializarErro;
+const NaoEncontrado = require('../errors/NaoEncontrado');
+const CampoInvalido = require('../errors/CampoInvalido');
+const CampoQtdMaxima = require('../errors/CampoQtdMaxima');
+const CampoQtdMinima = require('../errors/CampoQtdMinima');
+const FormatoInvalido = require('../errors/FormatoInvalido');
 
 module.exports = () => {
     const app = express();
@@ -12,11 +17,12 @@ module.exports = () => {
             formatoSolicitado = 'application/json';
         }
 
-        if(FormatosValidos.indexOf(formatoSolicitado) === -1){
+        if(FormatosValidos.indexOf(formatoSolicitado) === -1) {
             resp.status(406);
             resp.end();
             return
         }
+
         resp.setHeader('Content-Type', formatoSolicitado);
         next()
     });
@@ -24,29 +30,31 @@ module.exports = () => {
     app.use(express.json());
     app.use('/api', routesAgendamento);
 
+
     app.use((error, req, resp, next) => {
         let status = 500;
 
         serializarErro = new SerializarErro(
-            resp.getHeader('Content-Type')
+           resp.getHeader('Content-Type') 
         );
 
-        if( error instanceof NaoEncontrado) {
-            status = 404
+        if(error instanceof NaoEncontrado) {
+            status = 404;
         };
 
-        if(error instanceof CampoInvalido || error instanceof CampoQtdMaxima || error instanceof CampoQtdMinima) {
-            status = 400
+        if(error instanceof CampoInvalido || error instanceof CampoQtdMaxima 
+            || error instanceof CampoQtdMinima) {
+            status = 400;
         };
 
-        if( error instanceof FormatoInvalido) {
-            status = 406
+        if(error instanceof FormatoInvalido) {
+            status = 406;
         };
-        
+
         resp.status(status).send(
             serializarErro.transformar({
                 id: error.idError,
-                mensagem: error.mensagem
+                mensagem: error.message
             })
         );
     })

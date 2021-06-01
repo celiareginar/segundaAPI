@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const servicoAgendamento = require('../../services/index');
+const servicoAgendamento = require('../../services/agendamentos');
 
 router.get('/agendamentos', 
     servicoAgendamento.carregarTodosAgendamentos
