@@ -1,7 +1,7 @@
 const express = require('express');
 const routesAgendamento = require('../api');
 const FormatosValidos = require('../shared/Serializar').FormatosValidos;
-const SerializarErro = require('../shared/Serializar').serializarErro;
+const SerializarErro = require('../shared/Serializar').SerializarErro;
 
 module.exports = () => {
     const app = express();
@@ -26,6 +26,7 @@ module.exports = () => {
 
     app.use((error, req, resp, next) => {
         let status = 500;
+
         serializarErro = new SerializarErro(
             resp.getHeader('Content-Type')
         );
@@ -47,7 +48,7 @@ module.exports = () => {
                 id: error.idError,
                 mensagem: error.mensagem
             })
-        )
+        );
     })
 
     return app

@@ -1,4 +1,5 @@
 const FormatoInvalido = require('../errors/FormatoInvalido');
+const jsontoxml = require('jsontoxml');
 
 class Serializar {
     json(dados) {
@@ -6,11 +7,36 @@ class Serializar {
     }
 
     transformar(dados) {
-        if (this.contentType !== 'application/json') {
-            throw new FormatoInvalido(this.contentType);
+        dados = this.filtrar
+        if (this.contentType === 'application/json') {
+            return this.json(dados);
         }
-        return this.json(dados);
+        if(this.contentType === 'application/xml'){
+            return this.xml(dados);
+        }
+        throw new FormatoInvalido(this.contentType);
     }
+}
+xml(dados) {
+
+    if(Array.isArray(dados)) {
+        dados = dados.map((item) =>{
+            return {
+                [this.tag]: item
+            }
+        });
+        this.tag = this.tagList;
+    }
+    return jsontoxml({
+        [this.tag]: dados
+    });
+}
+filtrarCampos(dados) {
+    const camposFiltrados = {};
+    this.camposPermitidos..forEach(campo => {
+        camposFiltrados[campo] = dados[campo]
+        
+    });
 }
 
 class SerializarAgendamento extends Serializar {
@@ -19,6 +45,7 @@ class SerializarAgendamento extends Serializar {
         this.contentType = contentType;
     };
 };
+
 class SerializarErro extends Serializar {
     constructor(contentType) {
         super()
@@ -33,5 +60,5 @@ module.exports = {
     Serializar: Serializar,
     SerializarAgendamento: SerializarAgendamento,
     SerializarErro: SerializarErro,
-    FormatoValido: ['aplication/json']
+    FormatosValidos: ['application/json']
 }
