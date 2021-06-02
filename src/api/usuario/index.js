@@ -13,11 +13,11 @@ router.get('/usuarios/:id',
     servicoUsuario.carregarUsuario
 );
 
-router.delete('/usuarios/:id'
+router.delete('/usuarios/:id',
     servicoUsuario.delete
 );
 
-router.put('/usuarios/:id'
+router.put('/usuarios/:id',
     servicoUsuario.alterarUsuario
 );
 
