@@ -1,29 +1,71 @@
-const Sequelize = require('sequelize');
-const instanciadb = require('../../db');
+const modeloUsuario = require('./modelTabelaUsuario');
 
-const columns = {
-    nome: {
-        type: Sequelize.STRING,
-        allowNull: false
+
+module.exports = {
+    async listar() {
+        try {
+            return await modeloUsuario.findAll({
+                raw: true,
+            });
+        } catch (error) {
+            throw error        
+        }
     },
 
-    email: {
-        type: Sequelize.STRING,
-        allowNull: false
+    async adicionar(usuario) {
+        try{
+            return await modeloUsuario.create(usuario);
+        } catch (error) {
+            throw error
+        }
     },
 
-    senha: {
-        type: Sequelize.STRING,
-        allowNull: false
+    async buscarPorPK(id) {
+        try {
+            return await modeloUsuario.findByPk(id)
+        } catch (error) {
+            throw error
+        }
+    },
+
+    async buscarPorEmail(email) {
+        try {
+            return await modeloUsuario.findOne({
+                where: {
+                    email: email
+                }
+            });
+        } catch (error) {
+            throw error
+        }
+    },
+    
+    async atualizar(id, dados) {
+        try { 
+            return await modeloUsuario.update(
+                dados,
+                {
+                    where: {
+                        id:id
+                    }
+                }
+            );
+        } catch (error) {
+            throw error
+        }
+    },
+
+    async remover(id) {
+        try {
+            return await modeloUsuario.destroy(
+                {
+                    where: {
+                        id: id
+                    }
+                }
+            );
+        } catch (error) {
+            throw error
+        }
     }
 }
-
-const sequelizeOptions = {
-    freezeTableName: true,
-    tableName: "usuario",
-    timestamps: true,
-    createdAt: "data_criacao",
-    updatedAt: "data_atualizacao"
-};
-
-module.exports = instanciadb.define('usuario', columns, sequelizeOptions);

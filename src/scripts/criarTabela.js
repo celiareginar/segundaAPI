@@ -1,9 +1,18 @@
-const TabelaSequelize = require('../models/TabelaAgendamento');
+const ModeloTabelaAgendamento = require('../agendamentos/modelTabelaAgendamento');
+const ModeloTabelaUsuario = require('../usuarios/modelTabelaUsuario');
 
-TabelaSequelize.sync()
+ModeloTabelaAgendamento.sync()
     .then(()=> {
-        console.log('Tabela criada')
+        console.log('Tabela criada com sucesso')
     })
     .catch((error) => {
-        console.log(error)
+        console.log('Erro, tabela não criada', error)
+    });
+
+ModeloTabelaUsuario.sync()
+    .then(()=> {
+        console.log('Tabela criada com sucesso')
+    })
+    .catch((error) => {
+        console.log('Erro, tabela não criada', error)
     });

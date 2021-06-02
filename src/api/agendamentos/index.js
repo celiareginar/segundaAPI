@@ -1,24 +1,30 @@
 const router = require('express').Router();
-const servicoAgendamento = require('../../services/agendamentos');
+const servicoUsuario = require('../../services/usuarios');
+const passport = require('passport');
 
-router.get('/agendamentos', 
-    servicoAgendamento.carregarTodosAgendamentos
+router.get('/usuarios',  
+    passport.authenticate('bearer', {session: false}),
+    servicoUsuario.carregarTodosUsuarios
 );
 
-router.get('/agendamentos/:id',
-    servicoAgendamento.carregarAgendamento
+router.post('/usuarios', 
+    passport.authenticate('bearer', {session: false}),
+    servicoUsuario.criarUsuario
 );
 
-router.post('/agendamentos',
-    servicoAgendamento.criarAgendamento
-)
-
-router.put('/agendamentos/:id',
-    servicoAgendamento.alterarAgendamento
+router.get('/usuarios/:idUsuario', 
+    passport.authenticate('bearer', {session: false}),
+    servicoUsuario.carregarUsuario
 );
 
-router.delete('/agendamentos/:id', 
-    servicoAgendamento.deletarAgendamento
+router.put('/usuarios/:idUsuario',  
+    passport.authenticate('bearer', {session: false}),
+    servicoUsuario.alterarUsuario
 );
 
-module.exports = router
+router.delete('/usuarios/:idUsuario',  
+    passport.authenticate('bearer', {session: false}),
+    servicoUsuario.removerUsuario
+);
+
+module.exports = router;
